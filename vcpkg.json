@@ -1,0 +1,9 @@
+{
+	"name": "project-cowboy-wizard",
+	"version": "0.0.0.1",
+	"builtin-baseline": "501db0f17ef6df184fcdbfbe0f87cde2313b6ab1",
+	"dependencies": [
+		"glfw3",
+		"spdlog"
+	]
+}
