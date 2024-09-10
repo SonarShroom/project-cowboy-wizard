@@ -1,7 +1,8 @@
-#include <cstdio>
+#include "window.h"
 
 int main()
 {
-	std::printf("Hello from cowboy wizard!");
+	auto window = Graphics::Window::CreateWindow("Hello from cowboy wizard!", 1920, 1080);
+	window->Loop();
 	return 0;
 }
