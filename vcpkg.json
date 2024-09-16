@@ -4,7 +4,25 @@
 	"builtin-baseline": "501db0f17ef6df184fcdbfbe0f87cde2313b6ab1",
 	"dependencies": [
 		"entt",
-		"glfw3",
+		{
+			"name": "glad",
+			"features": [
+				"gl-api-33"
+			]
+		},
+		{
+			"name": "glfw3",
+			"features": [
+				"wayland"
+			],
+			"platform": "!(windows | osx)"
+		},
+		{
+			"name": "glfw3",
+			"platform": "!linux"
+		},
+		"glm",
+		"libpng",
 		"spdlog"
 	]
 }
