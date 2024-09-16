@@ -1,4 +1,4 @@
-#include "resource.h"
+#include "manager.h"
 
 namespace Resources
 {

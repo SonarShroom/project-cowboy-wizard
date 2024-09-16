@@ -6,15 +6,15 @@ project(ProjectCowboyWizard
 )
 
 add_executable(cowboy_wizard_game
-	src/core/private/engine.cpp
+	src/private/core/engine.cpp
 
-	src/graphics/private/window.cpp
-	src/graphics/private/renderer.cpp
+	src/private/graphics/window.cpp
+	src/private/graphics/renderer.cpp
 
-	src/input/private/manager.cpp
+	src/private/input/manager.cpp
 
 	src/private/resources/manager.cpp
-	src/private/resources/resource.cpp
+	src/private/resources/sprite.cpp
 
 	src/private/main.cpp
 )
@@ -29,6 +29,9 @@ target_include_directories(cowboy_wizard_game PRIVATE src/private/graphics)
 
 target_include_directories(cowboy_wizard_game PRIVATE src/public/input)
 target_include_directories(cowboy_wizard_game PRIVATE src/private/input)
+
+target_include_directories(cowboy_wizard_game PRIVATE src/public/resources)
+target_include_directories(cowboy_wizard_game PRIVATE src/private/resources)
 
 target_include_directories(cowboy_wizard_game PRIVATE src/public/world)
 target_include_directories(cowboy_wizard_game PRIVATE src/private/world)
