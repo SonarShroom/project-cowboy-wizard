@@ -8,11 +8,17 @@ namespace Resources
 class Resource
 {
 public:
-	Resource(const std::string& ID) : ID(ID) { }
+	enum class Type
+	{
+		INVALID,
+		SPRITE,
+	} resType = Type::INVALID;
+	static constexpr Type type = Type::INVALID;
+
+	Resource(const std::string& path) : path(path) { }
 	virtual ~Resource() = default;
 
-private:
-	std::string ID;
+	const std::string path;
 };
 
 }
