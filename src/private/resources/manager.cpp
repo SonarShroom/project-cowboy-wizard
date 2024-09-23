@@ -3,7 +3,9 @@
 #include <functional>
 #include <memory>
 #include <stdexcept>
+#include <span>
 
+#include <cassert>
 #include <cstdio>
 
 #include <png.h>
@@ -70,15 +72,59 @@ Sprite* Manager::CreateResource<Sprite>(const std::filesystem::path& pngPath)
 
 	png_init_io(pngData, pngFile.get());
 	png_set_sig_bytes(pngData, HEADER_SIZE);
-	png_read_png(pngData, pngInfo, PNG_TRANSFORM_IDENTITY, nullptr);
 
-	png_read_info(pngData, pngInfo);
-	unsigned int width	{ };
-	unsigned int height	{ };
-	int bitDepth		{ };
-	int colorType		{ };
-	int interlaceType	{ };
-	png_get_IHDR(pngData, pngInfo, &width, &height, &bitDepth, &colorType, &interlaceType, nullptr, nullptr);
+	// TODO: Swap for low level API if needs come around. This outputs 8bit color data always.
+	png_read_png(pngData, pngInfo, PNG_TRANSFORM_SCALE_16 | PNG_TRANSFORM_EXPAND, nullptr);
+
+	auto width		{ png_get_image_width(pngData, pngInfo) };
+	auto height		{ png_get_image_height(pngData, pngInfo) };
+	auto bitDepth	{ png_get_bit_depth(pngData, pngInfo) };
+	auto colorType	{ png_get_color_type(pngData, pngInfo) };
+
+	auto rowBytes { width };
+	switch (colorType)
+	{
+		case PNG_COLOR_TYPE_RGB:
+		{
+			rowBytes *= 3;
+		} break;
+		case PNG_COLOR_TYPE_RGBA:
+		{
+			rowBytes *= 4;
+		} break;
+		default: break;
+	}
+	switch (bitDepth)
+	{
+		case 8: { } break;
+		case 16: {
+			rowBytes *= 2;
+		} break;
+		case 1:
+		case 2:
+		case 4:
+		default: {
+			assert(false && "Bit depths less than 8 aren't supported yet!");
+		};
+	}
+	assert(png_get_rowbytes(pngData, pngInfo) == rowBytes && "Row bytes incorrectly calculated!");
+
+	const auto pngRawData = png_get_rows(pngData, pngInfo);
+	std::vector<unsigned char> pngDataVector(rowBytes * height);
+	std::span<png_bytep> rowsSpan(pngRawData, height);
+	for (const auto row : rowsSpan)
+	{
+		std::span<const png_byte> rowSpan(row, rowBytes);
+		for (const auto byte : rowSpan)
+		{
+			pngDataVector.push_back(byte);
+		}
+	}
+
+	const auto _id = pngPath.string();
+	resources[_id] = std::unique_ptr<Resource>(new Sprite(pngPath, pngDataVector));
+
+	return static_cast<Sprite*>(resources[_id].get());
 }
 
 }

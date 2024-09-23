@@ -15,6 +15,8 @@ public:
 
 	void SetClearColor(glm::vec4& clearColor);
 
+	void EmitQuad();
+
 	void Render();
 
 private:

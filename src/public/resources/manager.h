@@ -1,7 +1,7 @@
 #pragma once
 
 #include <filesystem>
-#include <set>
+#include <map>
 
 #include "resource.h"
 
@@ -9,6 +9,7 @@ namespace Resources
 {
 
 class Sprite;
+class Texture;
 
 class Manager
 {
@@ -59,7 +60,7 @@ public:
 	}
 
 private:
-	std::set<std::unique_ptr<Resource>> resources;
+	std::map<std::string, std::unique_ptr<Resource>> resources;
 };
 
 }

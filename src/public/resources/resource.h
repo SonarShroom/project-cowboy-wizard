@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <filesystem>
 
 namespace Resources
 {
@@ -11,14 +11,14 @@ public:
 	enum class Type
 	{
 		INVALID,
-		SPRITE,
+		SPRITE
 	} resType = Type::INVALID;
 	static constexpr Type type = Type::INVALID;
 
-	Resource(const std::string& path) : path(path) { }
+	Resource(const std::filesystem::path& path) : path(path) { }
 	virtual ~Resource() = default;
 
-	const std::string path;
+	const std::filesystem::path path;
 };
 
 }
