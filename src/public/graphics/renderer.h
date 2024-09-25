@@ -1,5 +1,8 @@
 #pragma once
 
+#include <variant>
+#include <queue>
+
 #include <glad/glad.h>
 #include <glm/vec4.hpp>
 

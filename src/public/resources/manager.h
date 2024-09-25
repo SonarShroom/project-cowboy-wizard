@@ -2,6 +2,8 @@
 
 #include <filesystem>
 #include <map>
+#include <string>
+#include <string_view>
 
 #include "resource.h"
 
@@ -9,6 +11,7 @@ namespace Resources
 {
 
 class Sprite;
+class Shader;
 class Texture;
 
 class Manager
@@ -19,6 +22,8 @@ public:
 
 	template<>
 	Sprite* CreateResource<Sprite>(const std::filesystem::path& path);
+
+	Shader* CreateDefaultShader(const std::string& id, const std::string_view& vertexShader, const std::string_view& fragShader);
 
 	template<typename T>
 	T* GetResource(const std::filesystem::path& path)

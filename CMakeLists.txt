@@ -8,14 +8,16 @@ project(ProjectCowboyWizard
 add_executable(cowboy_wizard_game
 	src/private/core/engine.cpp
 
-	src/private/graphics/window.cpp
 	src/private/graphics/renderer.cpp
+	src/private/graphics/spriterenderer.cpp
+	src/private/graphics/texture.cpp
+	src/private/graphics/window.cpp
 
 	src/private/input/manager.cpp
 
 	src/private/resources/manager.cpp
+	src/private/resources/shader.cpp
 	src/private/resources/sprite.cpp
-	"src/private/graphics/texture.cpp"
 
 	src/private/main.cpp
 )

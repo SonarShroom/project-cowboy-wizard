@@ -13,6 +13,7 @@ Engine::Engine()
 		window = std::make_unique<Window>("Project Cowboy Wizard", 1920, 1080, Window::PresentMode::WINDOWED);
 		renderer = std::make_unique<Renderer>(*window);
 		inputManager = std::make_unique<Input::Manager>(*window);
+		resourceManager = std::make_unique<Resources::Manager>();
 	}
 	catch (const std::runtime_error& e)
 	{

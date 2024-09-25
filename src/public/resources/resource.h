@@ -1,6 +1,6 @@
 #pragma once
 
-#include <filesystem>
+#include <string>
 
 namespace Resources
 {
@@ -15,10 +15,10 @@ public:
 	} resType = Type::INVALID;
 	static constexpr Type type = Type::INVALID;
 
-	Resource(const std::filesystem::path& path) : path(path) { }
+	Resource(const std::string& id) : id(id) { }
 	virtual ~Resource() = default;
 
-	const std::filesystem::path path;
+	const std::string id;
 };
 
 }

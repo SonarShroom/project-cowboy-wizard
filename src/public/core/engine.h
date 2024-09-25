@@ -7,6 +7,8 @@
 
 #include "input/manager.h"
 
+#include "resources/manager.h"
+
 namespace Core
 {
 
@@ -20,6 +22,7 @@ public:
 	std::unique_ptr<Graphics::Window> window;
 	std::unique_ptr<Graphics::Renderer> renderer;
 	std::unique_ptr<Input::Manager> inputManager;
+	std::unique_ptr<Resources::Manager> resourceManager;
 };
 
 }
