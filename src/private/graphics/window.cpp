@@ -13,7 +13,7 @@ void ShouldCloseCallback(GLFWwindow* window)
 
 Window::Window(
 	const std::string& title,
-	const int width, const int height,
+	const int newWidth, const int newHeight,
 	const PresentMode initialMode
 ) {
 	if (glfwInit() == GLFW_FALSE)
@@ -31,10 +31,10 @@ Window::Window(
 	switch (initialMode)
 	{
 	case PresentMode::WINDOWED: {
-		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+		window = glfwCreateWindow(newWidth, newHeight, title.c_str(), nullptr, nullptr);
 	} break;
 	case PresentMode::FULLSCREEN: {
-		window = glfwCreateWindow(width, height, title.c_str(), glfwGetPrimaryMonitor(), nullptr);
+		window = glfwCreateWindow(newWidth, newHeight, title.c_str(), glfwGetPrimaryMonitor(), nullptr);
 	} break;
 	case PresentMode::BORDERLESS_FULLSCREEN: {
 		auto* monitor = glfwGetPrimaryMonitor();
@@ -57,6 +57,8 @@ Window::Window(
 	glfwSetWindowUserPointer(window, this);
 
 	glfwSetWindowCloseCallback(window, &ShouldCloseCallback);
+
+	glfwGetFramebufferSize(window, &width, &height);
 
 	glfwMakeContextCurrent(window);
 }

@@ -10,6 +10,7 @@
 
 #include <png.h>
 
+#include "shader.h"
 #include "sprite.h"
 
 namespace Resources
@@ -122,9 +123,18 @@ Sprite* Manager::CreateResource<Sprite>(const std::filesystem::path& pngPath)
 	}
 
 	const auto _id = pngPath.string();
-	resources[_id] = std::unique_ptr<Resource>(new Sprite(pngPath, pngDataVector));
+	resources[_id] = std::unique_ptr<Resource>(new Sprite(pngPath, width, height, colorType, pngDataVector));
 
 	return static_cast<Sprite*>(resources[_id].get());
+}
+
+Shader* Manager::CreateDefaultShader(
+	const std::string& id,
+	const std::string_view& vertexShader, const std::string_view& fragShader
+)
+{
+	resources[id] = std::unique_ptr<Resource>(new Shader(id, vertexShader, fragShader));
+	return static_cast<Shader*>(resources[id].get());
 }
 
 }

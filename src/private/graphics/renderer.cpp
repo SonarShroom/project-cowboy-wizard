@@ -32,8 +32,12 @@ void Renderer::SetClearColor(glm::vec4& clearColor)
 }
 
 void Renderer::Render()
-{
+{	
 	glClear(GL_COLOR_BUFFER_BIT);
+	for (auto& renderer : spriteRenderers)
+	{
+		renderer.Render();
+	}
 }
 
 }

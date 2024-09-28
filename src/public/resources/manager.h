@@ -26,30 +26,27 @@ public:
 	Shader* CreateDefaultShader(const std::string& id, const std::string_view& vertexShader, const std::string_view& fragShader);
 
 	template<typename T>
-	T* GetResource(const std::filesystem::path& path)
+	T* GetResource(const std::string& id)
 	{
-		for (const auto& res : resources)
+		for (const auto& [resId, res] : resources)
 		{
-			if (path == res->path && res->resType == T::type)
+			if (id == resId)
 			{
 				if (res->resType == T::type)
 				{
 					return (T*)res.get();
 				}
-				else
-				{
-					return nullptr;
-				}
 			}
 		}
+		return nullptr;
 	}
 
 	template<typename T>
-	T* GetOrCreateResource(const std::filesystem::path& path)
+	T* GetOrCreateResource(const std::string& id)
 	{
-		for (const auto& res : resources)
+		for (const auto& [resId, res] : resources)
 		{
-			if (path == res->path && res->resType == T::type)
+			if (id == resId)
 			{
 				if (res->resType == T::type)
 				{
@@ -61,7 +58,7 @@ public:
 				}
 			}
 		}
-		return CreateResource<T>(path);
+		return CreateResource<T>(id);
 	}
 
 private:

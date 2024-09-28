@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 #include <glm/vec4.hpp>
 
+#include "spriterenderer.h"
 #include "window.h"
 
 namespace Graphics
@@ -21,6 +22,8 @@ public:
 	void EmitQuad();
 
 	void Render();
+
+	std::vector<SpriteRenderer> spriteRenderers;
 
 private:
 	Window& window;

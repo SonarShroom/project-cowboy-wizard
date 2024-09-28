@@ -8,7 +8,7 @@ namespace Resources
 {
 
 Shader::Shader(const std::string& id, const std::string_view& vertexShader, const std::string_view& fragmentShader)
-	: Resource(id)
+	: Resource(id, type)
 {
 	auto vertShaderID = glCreateShader(GL_VERTEX_SHADER);
 	auto fragShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -23,6 +23,7 @@ Shader::Shader(const std::string& id, const std::string_view& vertexShader, cons
 	if (!success)
 	{
 		glGetShaderInfoLog(vertShaderID, 512, nullptr, infoLog);
+		glDeleteShader(vertShaderID);
 		throw std::runtime_error(std::string(infoLog));
 	}
 
@@ -34,6 +35,8 @@ Shader::Shader(const std::string& id, const std::string_view& vertexShader, cons
 	if (!success)
 	{
 		glGetShaderInfoLog(fragShaderID, 512, nullptr, infoLog);
+		glDeleteShader(vertShaderID);
+		glDeleteShader(fragShaderID);
 		throw std::runtime_error(std::string(infoLog));
 	}
 
@@ -46,8 +49,31 @@ Shader::Shader(const std::string& id, const std::string_view& vertexShader, cons
 	if (!success)
 	{
 		glGetProgramInfoLog(shaderProg, 512, nullptr, infoLog);
+		glDeleteShader(vertShaderID);
+		glDeleteShader(fragShaderID);
+		glDeleteProgram(shaderProg);
 		throw std::runtime_error(std::string(infoLog));
 	}
+}
+
+Shader::~Shader()
+{
+	glDeleteProgram(shaderProg);
+}
+
+void Shader::SetBool(const std::string& name, const bool val)
+{
+	glUniform1i(glGetUniformLocation(shaderProg, name.c_str()), (int)val);
+}
+
+void Shader::SetInt(const std::string& name, const int val)
+{
+	glUniform1i(glGetUniformLocation(shaderProg, name.c_str()), val);
+}
+
+void Shader::SetFloat(const std::string& name, const float val)
+{
+	glUniform1f(glGetUniformLocation(shaderProg, name.c_str()), val);
 }
 
 }
