@@ -111,21 +111,22 @@ Sprite* Manager::CreateResource<Sprite>(const std::filesystem::path& pngPath)
 	assert(png_get_rowbytes(pngData, pngInfo) == rowBytes && "Row bytes incorrectly calculated!");
 
 	const auto pngRawData = png_get_rows(pngData, pngInfo);
-	std::vector<unsigned char> pngDataVector(rowBytes * height);
-	std::span<png_bytep> rowsSpan(pngRawData, height);
-	for (const auto row : rowsSpan)
+	std::vector<unsigned char> pngDataVector;
+	pngDataVector.reserve(rowBytes * height);
+	std::span<const png_bytep> rowsSpan(pngRawData, height);
+	for (auto _currRow = rowsSpan.rbegin(); _currRow != rowsSpan.rend(); _currRow++)
 	{
-		std::span<const png_byte> rowSpan(row, rowBytes);
+		std::span<const png_byte> rowSpan(*_currRow, rowBytes);
 		for (const auto byte : rowSpan)
 		{
 			pngDataVector.push_back(byte);
 		}
 	}
 
-	const auto _id = pngPath.string();
-	resources[_id] = std::unique_ptr<Resource>(new Sprite(pngPath, width, height, colorType, pngDataVector));
+	auto* _retVal = new Sprite(pngPath, width, height, colorType, pngDataVector);
+	resources[pngPath.string()] = std::unique_ptr<Resource>(_retVal);
 
-	return static_cast<Sprite*>(resources[_id].get());
+	return _retVal;
 }
 
 Shader* Manager::CreateDefaultShader(

@@ -2,12 +2,14 @@
 
 #include <glad/glad.h>
 
+#include "renderer.h"
 #include "shader.h"
+#include "texture.h"
 
 namespace Graphics
 {
 
-SpriteRenderer::SpriteRenderer()
+SpriteRenderer::SpriteRenderer(Graphics::Renderer& renderer) : renderer(renderer)
 {
 	constexpr auto type = GL_ARRAY_BUFFER;
 	glGenVertexArrays(1, &vao);
@@ -37,8 +39,20 @@ void SpriteRenderer::Render()
 		glUseProgram(shader->shaderProg);
 	}
 
+	if (texture)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture->id);
+	}
+
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void SpriteRenderer::SetSprite(const Resources::Sprite& sprite)
+{
+	delete texture;
+	texture = new Texture(sprite);
 }
 
 }

@@ -2,13 +2,15 @@
 
 #include <stdexcept>
 
+#include <spdlog/spdlog.h>
+
 namespace Core
 {
 
 const std::string_view vertShader =
 R"(#version 330 core
 layout (location = 0) in vec2 aPos;
-layout (location = 1) in vec3 aCol;
+layout (location = 1) in vec4 aCol;
 layout (location = 2) in vec2 aTexCoord;
 
 out vec4 ourColor;
@@ -17,7 +19,8 @@ out vec2 TexCoord;
 void main()
 {
 	gl_Position = vec4(aPos, 0.0f, 1.0);
-	
+	ourColor = aCol;
+	TexCoord = aTexCoord;
 }
 )";
 
@@ -28,11 +31,11 @@ in vec2 TexCoord;
 
 out vec4 FragColor;
 
-uniform sampler2D ourTexture;
+uniform sampler2D texture0;
 
 void main()
 {
-	FragColor = texture(ourTexture, TexCoord) * ourColor;
+	FragColor = texture(texture0, TexCoord) * ourColor;
 }
 )";
 
@@ -50,7 +53,7 @@ Engine::Engine()
 	}
 	catch (const std::runtime_error& e)
 	{
-		throw e;
+		spdlog::error(e.what());
 	}
 }
 

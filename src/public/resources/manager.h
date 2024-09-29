@@ -6,11 +6,11 @@
 #include <string_view>
 
 #include "resource.h"
+#include "sprite.h"
 
 namespace Resources
 {
 
-class Sprite;
 class Shader;
 class Texture;
 

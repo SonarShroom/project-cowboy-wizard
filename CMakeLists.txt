@@ -60,4 +60,38 @@ target_link_libraries(cowboy_wizard_game PRIVATE
 	spdlog::spdlog
 )
 
-install(TARGETS cowboy_wizard_game)
+install(TARGETS cowboy_wizard_game
+	CONFIGURATIONS Debug
+	RUNTIME DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build
+	LIBRARY DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build
+)
+
+install(TARGETS cowboy_wizard_game
+	CONFIGURATIONS Release
+	RUNTIME DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build
+	LIBRARY DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build
+)
+
+install(FILES
+	$<TARGET_RUNTIME_DLLS:cowboy_wizard_game>
+	DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build
+	COMPONENT cowboy_wizard_game
+)
+
+install(IMPORTED_RUNTIME_ARTIFACTS cowboy_wizard_game DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+
+install(DIRECTORY assets DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+
+install(
+	DIRECTORY $<PATH:GET_PARENT_PATH,$<TARGET_FILE:cowboy_wizard_game>>/
+	CONFIGURATIONS Debug
+	DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build
+	FILES_MATCHING PATTERN "*.dll"
+)
+
+install(
+	DIRECTORY $<PATH:GET_PARENT_PATH,$<TARGET_FILE:cowboy_wizard_game>>/
+	CONFIGURATIONS Release
+	DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build
+	FILES_MATCHING PATTERN "*.dll"
+)

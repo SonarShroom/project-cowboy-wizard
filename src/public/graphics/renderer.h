@@ -12,6 +12,8 @@
 namespace Graphics
 {
 
+class Texture;
+
 class Renderer
 {
 public:
@@ -22,6 +24,8 @@ public:
 	void EmitQuad();
 
 	void Render();
+
+	Texture* RegisterNewTexture();
 
 	std::vector<SpriteRenderer> spriteRenderers;
 
