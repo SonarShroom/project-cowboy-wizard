@@ -3,17 +3,27 @@
 #include "shader.h"
 #include "spriterenderer.h"
 #include "renderer.h"
+#include "transform.h"
 
 int main()
 {
 	Core::Engine engine;
 
 	// TODO: Remove, replace with scene entities.
-	auto& _spriteRend = engine.renderer->spriteRenderers.emplace_back(*engine.renderer);
 	auto* defaultShader = engine.resourceManager->GetResource<Resources::Shader>("defaultShader");
+	auto* testSprite = engine.resourceManager->GetOrCreateResource<Resources::Sprite>("assets/protect-sky-3.png");
 	defaultShader->SetInt("texture0", 0);
-	_spriteRend.shader = defaultShader;
-	_spriteRend.SetSprite(*engine.resourceManager->GetOrCreateResource<Resources::Sprite>("assets/protect-sky-3.png"));
+
+	auto& _registry = engine.scene.registry;
+	auto _ent = _registry.create();
+	auto& _transform = _registry.emplace<World::Transform>(_ent);
+	_transform.position = { .5f * (engine.window->width - testSprite->width), .5f * (engine.window->height - testSprite->height), 0.f };
+	auto& _spriteRend = _registry.emplace<Graphics::SpriteRenderer>(_ent, *engine.renderer);
+
+	_registry.patch<Graphics::SpriteRenderer>(_ent, [defaultShader, testSprite](auto& spriteRenderer) {
+		spriteRenderer.shader = defaultShader;
+		spriteRenderer.SetSprite(*testSprite);
+	});
 
 	engine.Run();
 	return 0;

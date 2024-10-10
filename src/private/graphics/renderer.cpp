@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 namespace Graphics
 {
 
@@ -11,9 +13,11 @@ static void FrameBufferSizeCallback(GLFWwindow* window, int width, int height)
 	_window->width = width;
 	_window->height = height;
 	glViewport(0, 0, width, height);
+
+	_window->renderer->projectionMat = glm::ortho<float>(0, width, height, 0, -1, 1);
 }
 
-Renderer::Renderer(Window& window) : window(window)
+Renderer::Renderer(Window& window, World::Scene& scene) : window(window), scene(scene)
 {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -21,8 +25,10 @@ Renderer::Renderer(Window& window) : window(window)
 	}
 
 	glViewport(0, 0, window.width, window.height);
+	projectionMat = glm::ortho<float>(0, window.width, window.height, 0, -1, 1);
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glfwSetFramebufferSizeCallback(window.GetRawWindow(), &FrameBufferSizeCallback);
+	window.renderer = this;
 }
 
 void Renderer::SetClearColor(glm::vec4& clearColor)
@@ -34,7 +40,8 @@ void Renderer::SetClearColor(glm::vec4& clearColor)
 void Renderer::Render()
 {	
 	glClear(GL_COLOR_BUFFER_BIT);
-	for (auto& renderer : spriteRenderers)
+	auto rendererView = scene.registry.view<Graphics::SpriteRenderer>();
+	for (auto [ent, renderer] : rendererView.each())
 	{
 		renderer.Render();
 	}

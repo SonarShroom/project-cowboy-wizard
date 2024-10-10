@@ -37,6 +37,8 @@ void SpriteRenderer::Render()
 	if (shader)
 	{
 		glUseProgram(shader->shaderProg);
+		shader->SetMatrix4("model", modelMatrix);
+		shader->SetMatrix4("projection", renderer.projectionMat);
 	}
 
 	if (texture)
@@ -49,10 +51,11 @@ void SpriteRenderer::Render()
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void SpriteRenderer::SetSprite(const Resources::Sprite& sprite)
+void SpriteRenderer::SetSprite(const Resources::Sprite& newSprite)
 {
 	delete texture;
-	texture = new Texture(sprite);
+	texture = new Texture(newSprite);
+	sprite = &newSprite;
 }
 
 }

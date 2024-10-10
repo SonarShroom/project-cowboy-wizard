@@ -7,6 +7,8 @@
 namespace Graphics
 {
 
+class Renderer;
+
 class Window
 {
 public:
@@ -19,6 +21,7 @@ public:
 
 	bool shouldClose { };
 	int width { }, height { };
+	Renderer* renderer { };
 
 	Window(
 		const std::string& title,

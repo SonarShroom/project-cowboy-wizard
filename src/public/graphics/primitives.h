@@ -27,24 +27,20 @@ struct Quad
 	Vertex verts[4]
 	{
 		{
-			{ 1.f, 1.f, },
-			{ 1.0f, 1.0f, 1.0f, 1.0f },
-			{ 1.f, 1.f },
+			.position	{ 1.f, 1.f },
+			.uv			{ 1.f, 1.f },
 		},
 		{
-			{ 1.f, 0.f, },
-			{ 1.0f, 1.0f, 1.0f, 1.0f },
-			{ 1.f, 0.f },
+			.position	{ 1.f, 0.f },
+			.uv			{ 1.f, 0.f },
 		},
 		{
-			{ 0.f, 0.f, },
-			{ 1.0f, 1.0f, 1.0f, 1.0f },
-			{ 0.f, 0.f },
+			.position	{ 0.f, 0.f },
+			.uv			{ 0.f, 0.f },
 		},
 		{
-			{ 0.f, 1.f, },
-			{ 1.0f, 1.0f, 1.0f, 1.0f },
-			{ 0.f, 1.f },
+			.position	{ 0.f, 1.f },
+			.uv			{ 0.f, 1.f },
 		},
 	};
 	static constexpr int elementIndicies[] = {

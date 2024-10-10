@@ -114,10 +114,10 @@ Sprite* Manager::CreateResource<Sprite>(const std::filesystem::path& pngPath)
 	std::vector<unsigned char> pngDataVector;
 	pngDataVector.reserve(rowBytes * height);
 	std::span<const png_bytep> rowsSpan(pngRawData, height);
-	for (auto _currRow = rowsSpan.rbegin(); _currRow != rowsSpan.rend(); _currRow++)
+	for (const auto& _currRow : rowsSpan)
 	{
-		std::span<const png_byte> rowSpan(*_currRow, rowBytes);
-		for (const auto byte : rowSpan)
+		std::span<const png_byte> rowSpan(_currRow, rowBytes);
+		for (const auto& byte : rowSpan)
 		{
 			pngDataVector.push_back(byte);
 		}

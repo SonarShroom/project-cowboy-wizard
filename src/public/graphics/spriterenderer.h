@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/mat4x4.hpp>
+
 #include "primitives.h"
 
 namespace Resources
@@ -23,19 +25,21 @@ public:
 
 	void Render();
 
+	inline const Resources::Sprite* GetSprite() { return sprite; }
 	void SetSprite(const Resources::Sprite& sprite);
 
-	unsigned int vao			{ };
-	unsigned int vbo			{ };
-	unsigned int ebo			{ };
+	unsigned int vao				{ };
+	unsigned int vbo				{ };
+	unsigned int ebo				{ };
 	Quad quad;
-	Resources::Shader* shader	{ };
+	Resources::Shader* shader		{ };
+	glm::mat4 modelMatrix			{ 1.0f };
 
 private:
-	Resources::Sprite* sprite	{ };
+	const Resources::Sprite* sprite	{ };
 
 	Graphics::Renderer& renderer;
-	Graphics::Texture* texture	{ };
+	Graphics::Texture* texture		{ };
 };
 
 }

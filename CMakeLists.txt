@@ -19,6 +19,8 @@ add_executable(cowboy_wizard_game
 	src/private/resources/shader.cpp
 	src/private/resources/sprite.cpp
 
+	src/private/world/scene.cpp
+
 	src/private/main.cpp
 )
 

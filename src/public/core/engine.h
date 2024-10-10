@@ -9,6 +9,8 @@
 
 #include "resources/manager.h"
 
+#include "world/scene.h"
+
 namespace Core
 {
 
@@ -20,6 +22,7 @@ public:
 	void Run();
 
 	std::unique_ptr<Graphics::Window> window;
+	World::Scene scene;
 	std::unique_ptr<Graphics::Renderer> renderer;
 	std::unique_ptr<Input::Manager> inputManager;
 	std::unique_ptr<Resources::Manager> resourceManager;

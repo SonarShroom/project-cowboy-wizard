@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Resources
 {
@@ -63,17 +64,26 @@ Shader::~Shader()
 
 void Shader::SetBool(const std::string& name, const bool val)
 {
-	glUniform1i(glGetUniformLocation(shaderProg, name.c_str()), (int)val);
+	auto loc = glGetUniformLocation(shaderProg, name.c_str());
+	glUniform1i(loc, (int)val);
 }
 
 void Shader::SetInt(const std::string& name, const int val)
 {
-	glUniform1i(glGetUniformLocation(shaderProg, name.c_str()), val);
+	auto loc = glGetUniformLocation(shaderProg, name.c_str());
+	glUniform1i(loc, val);
 }
 
 void Shader::SetFloat(const std::string& name, const float val)
 {
-	glUniform1f(glGetUniformLocation(shaderProg, name.c_str()), val);
+	auto loc = glGetUniformLocation(shaderProg, name.c_str());
+	glUniform1f(loc, val);
+}
+
+void Shader::SetMatrix4(const std::string& name, const glm::mat4& mat)
+{
+	auto loc = glGetUniformLocation(shaderProg, name.c_str());
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 }
