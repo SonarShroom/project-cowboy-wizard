@@ -26,6 +26,9 @@ public:
 	std::unique_ptr<Graphics::Renderer> renderer;
 	std::unique_ptr<Input::Manager> inputManager;
 	std::unique_ptr<Resources::Manager> resourceManager;
+
+	float frameBegin	{ };
+	float frameEnd		{ };
 };
 
 }

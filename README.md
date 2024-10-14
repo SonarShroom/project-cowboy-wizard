@@ -37,3 +37,6 @@ The game should be present in the `build/` folder inside this project's root fol
 
 This project's dependencies are all listed in the `vcpkg.json` in the root of the repository. Save for any exceptions
 where dependencies aren't present in vcpkg's main repository, which will appear here if they become required.
+
+Extra dependencies:
+- ImGui (as submodule, on the docking branch)

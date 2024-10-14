@@ -4,6 +4,7 @@
 
 #include "renderer.h"
 #include "shader.h"
+#include "sprite.h"
 #include "texture.h"
 
 namespace Graphics
@@ -56,6 +57,8 @@ void SpriteRenderer::SetSprite(const Resources::Sprite& newSprite)
 	delete texture;
 	texture = new Texture(newSprite);
 	sprite = &newSprite;
+	width = newSprite.width;
+	height = newSprite.height;
 }
 
 }

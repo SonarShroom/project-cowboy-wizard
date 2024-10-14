@@ -42,13 +42,13 @@ void Scene::UpdateSpriteRendererMatrix(entt::registry& registry, entt::entity en
 	_modelMat = glm::translate(_modelMat, transform.position);
 
 	// Rotate around the center
-	_modelMat = glm::translate(_modelMat, glm::vec3(.5f * _sprite->width, .5f * _sprite->height, 0.0f));
+	_modelMat = glm::translate(_modelMat, glm::vec3(.5f * spriteRenderer.width, .5f * spriteRenderer.width, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-	_modelMat = glm::translate(_modelMat, glm::vec3(-.5f * _sprite->width, -.5f * _sprite->height, 0.0f));
+	_modelMat = glm::translate(_modelMat, glm::vec3(-.5f * spriteRenderer.width, -.5f * spriteRenderer.height, 0.0f));
 
-	_modelMat = glm::scale(_modelMat, glm::vec3(_sprite->width, _sprite->height, 1.0f));
+	_modelMat = glm::scale(_modelMat, glm::vec3(spriteRenderer.width, spriteRenderer.height, 1.0f));
 	_modelMat = glm::scale(_modelMat, transform.scale);
 }
 

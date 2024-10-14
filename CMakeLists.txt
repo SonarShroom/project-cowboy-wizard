@@ -83,12 +83,14 @@ set_target_properties(cowboy_wizard_game PROPERTIES
 	CXX_STANDARD_REQUIRED TRUE
 )
 
+find_path(DRLIBS_INCLUDE_DIRS "dr_flac.h")
 find_package(EnTT CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(PNG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
 target_link_libraries(cowboy_wizard_game PRIVATE
+	${DRLIBS_INCLUDE_DIRS}
 	EnTT::EnTT
 	Freetype::Freetype
 	glad::glad

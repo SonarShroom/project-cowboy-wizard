@@ -89,9 +89,51 @@ void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 	const auto* sprite = spriteRenderer.GetSprite();
 	if (sprite && texture)
 	{
-		const auto id { (ImTextureID)texture->id };
-		const ImVec2 size { (float)sprite->width, (float)sprite->height };
+		const auto id		{ (ImTextureID)texture->id };
+		const ImVec2 size	{ (float)sprite->width, (float)sprite->height };
 		ImGui::Image(id, size);
+		ImGui::Text("Resource: %s", sprite->id.c_str());
+		auto width = spriteRenderer.width;
+		ImGui::Text("Width");
+		ImGui::SameLine();
+		if (ImGui::InputScalar("##width", ImGuiDataType_U32, &width))
+		{
+			inspector.scene->registry.patch<Graphics::SpriteRenderer>(inspector.selectedEnt,
+				[&width](Graphics::SpriteRenderer& renderer) {
+					renderer.width = width;
+				}
+			);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Reset##weight"))
+		{
+			inspector.scene->registry.patch<Graphics::SpriteRenderer>(inspector.selectedEnt,
+				[](Graphics::SpriteRenderer& renderer) {
+					renderer.width = renderer.GetSprite()->width;
+				}
+			);
+		}
+
+		auto height = spriteRenderer.height;
+		ImGui::Text("Height");
+		ImGui::SameLine();
+		if (ImGui::InputScalar("##height", ImGuiDataType_U32, &height))
+		{
+			inspector.scene->registry.patch<Graphics::SpriteRenderer>(inspector.selectedEnt,
+				[&height](Graphics::SpriteRenderer& renderer) {
+					renderer.height = height;
+				}
+			);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Reset##height"))
+		{
+			inspector.scene->registry.patch<Graphics::SpriteRenderer>(inspector.selectedEnt,
+				[](Graphics::SpriteRenderer& renderer) {
+					renderer.height = renderer.GetSprite()->height;
+				}
+			);
+		}
 	}
 	else
 	{

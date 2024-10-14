@@ -34,6 +34,8 @@ public:
 	unsigned int ebo				{ };
 	Quad quad;
 	Resources::Shader* shader		{ };
+	unsigned int width				{ };
+	unsigned int height				{ };
 	glm::mat4 modelMatrix			{ 1.0f };
 
 private:
