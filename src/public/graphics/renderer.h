@@ -7,6 +7,8 @@
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
 
+#include "context.h"	
+
 #include "spriterenderer.h"
 #include "window.h"
 
@@ -20,6 +22,8 @@ class Texture;
 class Renderer
 {
 public:
+	glm::mat4 projectionMat;
+
 	Renderer(Window& window, World::Scene& scene);
 
 	void SetClearColor(glm::vec4& clearColor);
@@ -30,12 +34,11 @@ public:
 
 	Texture* RegisterNewTexture();
 
-	std::vector<SpriteRenderer> spriteRenderers;
-	glm::mat4 projectionMat;
-
 private:
-	Window& window;
+	const Window& window;
 	World::Scene& scene;
+
+	Tools::Context tools { window, scene };
 	glm::vec4 clearColor { .2f, .3f, .3f, 1.f };
 };
 

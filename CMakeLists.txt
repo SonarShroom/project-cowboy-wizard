@@ -5,6 +5,36 @@ project(ProjectCowboyWizard
 	LANGUAGES C CXX
 )
 
+add_library(imgui STATIC 
+	deps/imgui/imgui.cpp
+	#deps/imgui/imgui_demo.cpp
+	deps/imgui/imgui_draw.cpp
+	deps/imgui/imgui_tables.cpp
+	deps/imgui/imgui_widgets.cpp
+
+	deps/imgui/backends/imgui_impl_glfw.cpp
+	deps/imgui/backends/imgui_impl_opengl3.cpp
+
+	deps/imgui/misc/cpp/imgui_stdlib.cpp
+	deps/imgui/misc/freetype/imgui_freetype.cpp
+)
+
+target_include_directories(imgui PUBLIC
+	deps/imgui
+	deps/imgui/backends
+	deps/imgui/misc/cpp
+	deps/imgui/misc/freetype
+)
+
+find_package(Freetype REQUIRED)
+find_package(glad CONFIG REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(imgui PRIVATE
+	Freetype::Freetype
+	glad::glad
+	glfw
+)
+
 add_executable(cowboy_wizard_game
 	src/private/core/engine.cpp
 
@@ -18,6 +48,10 @@ add_executable(cowboy_wizard_game
 	src/private/resources/manager.cpp
 	src/private/resources/shader.cpp
 	src/private/resources/sprite.cpp
+
+	src/private/tools/context.cpp
+	src/private/tools/entityinspector.cpp
+	src/private/tools/sceneinspector.cpp
 
 	src/private/world/scene.cpp
 
@@ -38,6 +72,9 @@ target_include_directories(cowboy_wizard_game PRIVATE src/private/input)
 target_include_directories(cowboy_wizard_game PRIVATE src/public/resources)
 target_include_directories(cowboy_wizard_game PRIVATE src/private/resources)
 
+target_include_directories(cowboy_wizard_game PRIVATE src/public/tools)
+target_include_directories(cowboy_wizard_game PRIVATE src/private/tools)
+
 target_include_directories(cowboy_wizard_game PRIVATE src/public/world)
 target_include_directories(cowboy_wizard_game PRIVATE src/private/world)
 
@@ -47,19 +84,20 @@ set_target_properties(cowboy_wizard_game PROPERTIES
 )
 
 find_package(EnTT CONFIG REQUIRED)
-find_package(glad CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(PNG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
 target_link_libraries(cowboy_wizard_game PRIVATE
 	EnTT::EnTT
+	Freetype::Freetype
 	glad::glad
 	glfw
 	glm::glm
 	PNG::PNG
 	spdlog::spdlog
+
+	imgui
 )
 
 install(TARGETS cowboy_wizard_game

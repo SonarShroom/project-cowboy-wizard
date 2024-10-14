@@ -62,15 +62,22 @@ Engine::Engine()
 
 void Engine::Run()
 {
+	static double frameBegin	{ };
+	static double frameEnd		{ };
+
+	frameBegin = frameEnd = glfwGetTime();
 	while (!window->shouldClose)
 	{
 		inputManager->Process();
 
-		scene.Update(0.f);
+		scene.Update(frameBegin - frameEnd);
 		renderer->Render();
 
 		window->PollEvents();
 		window->SwapBuffers();
+
+		frameEnd = frameBegin;
+		frameBegin = glfwGetTime();
 	}
 }
 

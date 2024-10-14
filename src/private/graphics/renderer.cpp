@@ -4,6 +4,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "context.h"
+
 namespace Graphics
 {
 
@@ -38,13 +40,14 @@ void Renderer::SetClearColor(glm::vec4& clearColor)
 }
 
 void Renderer::Render()
-{	
+{
 	glClear(GL_COLOR_BUFFER_BIT);
 	auto rendererView = scene.registry.view<Graphics::SpriteRenderer>();
 	for (auto [ent, renderer] : rendererView.each())
 	{
 		renderer.Render();
 	}
+	tools.Render();
 }
 
 }

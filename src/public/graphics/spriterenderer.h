@@ -27,6 +27,7 @@ public:
 
 	inline const Resources::Sprite* GetSprite() { return sprite; }
 	void SetSprite(const Resources::Sprite& sprite);
+	inline const Texture* GetTexture() { return texture; }
 
 	unsigned int vao				{ };
 	unsigned int vbo				{ };
@@ -38,8 +39,8 @@ public:
 private:
 	const Resources::Sprite* sprite	{ };
 
-	Graphics::Renderer& renderer;
-	Graphics::Texture* texture		{ };
+	Renderer& renderer;
+	Texture* texture				{ };
 };
 
 }
