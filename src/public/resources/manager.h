@@ -7,11 +7,12 @@
 
 #include "resource.h"
 #include "sprite.h"
+#include "sound.h"
+#include "shader.h"
 
 namespace Resources
 {
 
-class Shader;
 class Texture;
 
 class Manager
@@ -22,6 +23,9 @@ public:
 
 	template<>
 	Sprite* CreateResource<Sprite>(const std::filesystem::path& path);
+
+	template<>
+	Sound* CreateResource<Sound>(const std::filesystem::path& path);
 
 	Shader* CreateDefaultShader(const std::string& id, const std::string_view& vertexShader, const std::string_view& fragShader);
 

@@ -8,17 +8,31 @@
 #include <cassert>
 #include <cstdio>
 
+#include <AL/al.h>
+
+#define DR_WAV_IMPLEMENTATION
+#include <dr_wav.h>
+
 #include <png.h>
 
+#include <spdlog/spdlog.h>
+
+#include "audio/manager.h"
 #include "shader.h"
+#include "sound.h"
 #include "sprite.h"
 
 namespace Resources
 {
 
 template<>
-Sprite* Manager::CreateResource<Sprite>(const std::filesystem::path& pngPath)
+Sprite* Manager::CreateResource(const std::filesystem::path& pngPath)
 {
+	if (!std::filesystem::exists(pngPath))
+	{
+		throw std::runtime_error("PNG file does not exist!");
+	}
+
 	std::unique_ptr<std::FILE, decltype(&fclose)> pngFile{
 #ifdef _MSC_VER
 	_wfopen(pngPath.c_str(), L"rb"),
@@ -123,10 +137,79 @@ Sprite* Manager::CreateResource<Sprite>(const std::filesystem::path& pngPath)
 		}
 	}
 
-	auto* _retVal = new Sprite(pngPath, width, height, colorType, pngDataVector);
-	resources[pngPath.string()] = std::unique_ptr<Resource>(_retVal);
+	auto* retVal = new Sprite(pngPath, width, height, colorType, pngDataVector);
+	resources[pngPath.string()] = std::unique_ptr<Resource>(retVal);
 
-	return _retVal;
+	return retVal;
+}
+
+template<>
+Sound* Manager::CreateResource(const std::filesystem::path& soundPath)
+{
+	if (!std::filesystem::exists(soundPath))
+	{
+		throw std::runtime_error("Sound file does not exist!");
+	}
+	
+	drwav wav;
+	if (!drwav_init_file(&wav, soundPath.string().c_str(), nullptr))
+	{
+		drwav_uninit(&wav);
+		throw std::runtime_error("WAV sound file could not be opened!");
+	}
+
+	auto expectedSamples = wav.totalPCMFrameCount * wav.channels;
+	std::vector<unsigned int> decodedInterleavedPCMFrames(expectedSamples);
+	auto samplesDecoded = drwav_read_pcm_frames(&wav, wav.totalPCMFrameCount, decodedInterleavedPCMFrames.data());
+
+	if (samplesDecoded != expectedSamples)
+	{
+		spdlog::warn(
+			"Expected samples decoded from file {} differ from actually decoded samples ({}/{})",
+			soundPath.string(), samplesDecoded, expectedSamples
+		);
+	}
+	
+	unsigned int bufferID { };
+	alGenBuffers(1, &bufferID);
+	if (Audio::Manager::CheckOpenALErr())
+	{
+		throw std::runtime_error("Could not allocate OpenAL sound buffer!");
+	}
+
+	auto sizeInBytes = samplesDecoded * sizeof(unsigned int);
+	if (wav.bitsPerSample == 8)
+	{
+		if (wav.channels == 1)
+		{
+			alBufferData(bufferID, AL_FORMAT_MONO8, decodedInterleavedPCMFrames.data(), sizeInBytes, wav.sampleRate);
+		}
+		else
+		{
+			alBufferData(bufferID, AL_FORMAT_STEREO8, decodedInterleavedPCMFrames.data(), sizeInBytes, wav.sampleRate);
+		}
+	}
+	else if (wav.bitsPerSample == 16)
+	{
+		if (wav.channels == 1)
+		{
+			alBufferData(bufferID, AL_FORMAT_MONO16, decodedInterleavedPCMFrames.data(), sizeInBytes, wav.sampleRate);
+		}
+		else
+		{
+			alBufferData(bufferID, AL_FORMAT_STEREO16, decodedInterleavedPCMFrames.data(), sizeInBytes, wav.sampleRate);
+		}
+	}
+	if (Audio::Manager::CheckOpenALErr())
+	{
+		throw std::runtime_error("Could not buffer data to OpenAL sound buffer!");
+	}
+
+	auto* retVal = new Sound(soundPath, wav.channels, decodedInterleavedPCMFrames, bufferID);
+	resources[soundPath.string()] = std::unique_ptr<Sound>(retVal);
+
+	drwav_uninit(&wav);
+	return retVal;
 }
 
 Shader* Manager::CreateDefaultShader(

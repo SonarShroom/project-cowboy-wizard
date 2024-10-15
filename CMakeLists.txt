@@ -36,6 +36,9 @@ target_link_libraries(imgui PRIVATE
 )
 
 add_executable(cowboy_wizard_game
+	src/private/audio/manager.cpp
+	src/private/audio/source.cpp
+
 	src/private/core/engine.cpp
 
 	src/private/graphics/renderer.cpp
@@ -47,6 +50,7 @@ add_executable(cowboy_wizard_game
 
 	src/private/resources/manager.cpp
 	src/private/resources/shader.cpp
+	src/private/resources/sound.cpp
 	src/private/resources/sprite.cpp
 
 	src/private/tools/context.cpp
@@ -59,6 +63,9 @@ add_executable(cowboy_wizard_game
 )
 
 target_include_directories(cowboy_wizard_game PUBLIC src/public)
+
+target_include_directories(cowboy_wizard_game PRIVATE src/public/audio)
+target_include_directories(cowboy_wizard_game PRIVATE src/private/audio)
 
 target_include_directories(cowboy_wizard_game PRIVATE src/public/core)
 target_include_directories(cowboy_wizard_game PRIVATE src/private/core)
@@ -86,6 +93,7 @@ set_target_properties(cowboy_wizard_game PROPERTIES
 find_path(DRLIBS_INCLUDE_DIRS "dr_flac.h")
 find_package(EnTT CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(OpenAL CONFIG REQUIRED)
 find_package(PNG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
@@ -96,6 +104,7 @@ target_link_libraries(cowboy_wizard_game PRIVATE
 	glad::glad
 	glfw
 	glm::glm
+	OpenAL::OpenAL
 	PNG::PNG
 	spdlog::spdlog
 

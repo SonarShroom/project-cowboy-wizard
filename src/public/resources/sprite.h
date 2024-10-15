@@ -18,7 +18,7 @@ public:
 		const unsigned int width, const unsigned int height,
 		const unsigned int colorType,
 		std::vector<unsigned char>& pngData) :
-			Resource(path.string(), type),
+			Resource(path.string(), Type::SPRITE),
 			width(width), height(height),
 			colorType(colorType),
 			pngData(pngData) { }

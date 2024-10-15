@@ -47,6 +47,7 @@ Engine::Engine()
 	using namespace Graphics;
 	try
 	{
+		audioManager = std::make_unique<Audio::Manager>();
 		window = std::make_unique<Window>("Project Cowboy Wizard", 1920, 1080, Window::PresentMode::WINDOWED);
 		renderer = std::make_unique<Renderer>(*window, scene);
 		inputManager = std::make_unique<Input::Manager>(*window);

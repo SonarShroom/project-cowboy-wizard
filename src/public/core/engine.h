@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "audio/manager.h"
+
 #include "graphics/renderer.h"
 #include "graphics/window.h"
 
@@ -21,6 +23,7 @@ public:
 
 	void Run();
 
+	std::unique_ptr<Audio::Manager> audioManager;
 	std::unique_ptr<Graphics::Window> window;
 	World::Scene scene;
 	std::unique_ptr<Graphics::Renderer> renderer;

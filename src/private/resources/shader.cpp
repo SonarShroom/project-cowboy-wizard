@@ -9,7 +9,7 @@ namespace Resources
 {
 
 Shader::Shader(const std::string& id, const std::string_view& vertexShader, const std::string_view& fragmentShader)
-	: Resource(id, type)
+	: Resource(id, Type::SHADER)
 {
 	auto vertShaderID = glCreateShader(GL_VERTEX_SHADER);
 	auto fragShaderID = glCreateShader(GL_FRAGMENT_SHADER);

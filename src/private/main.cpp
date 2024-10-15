@@ -1,6 +1,7 @@
 #include "engine.h"
 
 #include "shader.h"
+#include "sprite.h"
 #include "spriterenderer.h"
 #include "renderer.h"
 #include "transform.h"
@@ -12,6 +13,7 @@ int main()
 	// TODO: Remove, replace with scene entities.
 	auto* defaultShader = engine.resourceManager->GetResource<Resources::Shader>("defaultShader");
 	auto* testSprite = engine.resourceManager->GetOrCreateResource<Resources::Sprite>("assets/protect-sky-3.png");
+	auto* testSound = engine.resourceManager->GetOrCreateResource<Resources::Sound>("assets/sfx_wpn_cannon1.wav");
 	defaultShader->SetInt("texture0", 0);
 
 	auto& _registry = engine.scene.registry;
