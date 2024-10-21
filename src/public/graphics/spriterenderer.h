@@ -21,6 +21,8 @@ class Texture;
 class SpriteRenderer
 {
 public:
+	static constexpr char name[] = "Sprite Renderer";
+
 	SpriteRenderer(Graphics::Renderer& renderer);
 
 	void Render();

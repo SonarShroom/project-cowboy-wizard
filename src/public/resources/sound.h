@@ -18,8 +18,8 @@ public:
 		const unsigned int bufferID) :
 			Resource(path.string(), Type::SOUND),
 			channels(channels),
-			pcmSamples(pcmSamples) { }
-
+			pcmSamples(pcmSamples),
+			bufferID(bufferID) { }
 	~Sound();
 
 	unsigned int channels { };

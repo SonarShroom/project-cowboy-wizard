@@ -5,7 +5,11 @@
 #include <string>
 #include <string_view>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include "resource.h"
+#include "font.h"
 #include "sprite.h"
 #include "sound.h"
 #include "shader.h"
@@ -18,8 +22,14 @@ class Texture;
 class Manager
 {
 public:
+	Manager();
+	~Manager();
+
 	template<typename T>
 	T* CreateResource(const std::filesystem::path& path) { return nullptr; }
+
+	template<>
+	Font* CreateResource<Font>(const std::filesystem::path& path);
 
 	template<>
 	Sprite* CreateResource<Sprite>(const std::filesystem::path& path);
@@ -67,6 +77,8 @@ public:
 
 private:
 	std::map<std::string, std::unique_ptr<Resource>> resources;
+
+	FT_Library ftLibrary { };
 };
 
 }

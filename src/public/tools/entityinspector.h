@@ -7,6 +7,10 @@
 
 #include "sceneinspector.h"
 
+namespace Audio
+{
+	class Source;
+}
 
 namespace Graphics
 {
@@ -39,10 +43,13 @@ public:
 	}
 
 	template<>
-	void InspectComponent(Graphics::SpriteRenderer& transform);
+	void InspectComponent(Graphics::SpriteRenderer& renderer);
 
 	template<>
 	void InspectComponent(World::Transform& transform);
+
+	template<>
+	void InspectComponent(Audio::Source& source);
 
 	const SceneInspector& inspector;
 };

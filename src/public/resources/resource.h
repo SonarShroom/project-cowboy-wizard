@@ -11,6 +11,7 @@ public:
 	enum class Type
 	{
 		INVALID,
+		FONT,
 		SPRITE,
 		SHADER,
 		SOUND,

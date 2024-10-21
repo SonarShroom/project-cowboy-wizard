@@ -8,22 +8,12 @@
 namespace Audio
 {
 
-bool Manager::CheckOpenALErr()
-{
-	if (auto err = alGetError(); err != AL_NO_ERROR)
-	{
-		spdlog::error("OpenAL error: {}", err);
-		return true;
-	}
-	return false;
-}
-
 Manager::Manager()
 {
-	if (alcIsExtensionPresent(nullptr, "ALC_ENUMERATION_EXT"))
+	if (alcIsExtensionPresent(nullptr, "ALC_ENUMERATE_ALL_EXT"))
 	{
 		spdlog::info("Existing audio devices:");
-		auto* deviceList { alcGetString(nullptr, ALC_DEVICE_SPECIFIER) };
+		auto* deviceList = alcGetString(nullptr, ALC_ALL_DEVICES_SPECIFIER);
 		auto* beginDeviceNameChar = deviceList;
 		auto* endDeviceNameChar = beginDeviceNameChar + 1;
 		
@@ -31,7 +21,7 @@ Manager::Manager()
 		while (*beginDeviceNameChar != 0 && *endDeviceNameChar != 0)
 		{
 			endDeviceNameChar++;
-			if (endDeviceNameChar == 0)
+			if (*endDeviceNameChar == 0)
 			{
 				deviceNames.emplace_back(beginDeviceNameChar, endDeviceNameChar);
 				beginDeviceNameChar = endDeviceNameChar + 1;
@@ -43,7 +33,7 @@ Manager::Manager()
 		{
 			spdlog::info("\t{}", name.c_str());
 		}
-		auto* defaultDevice { alcGetString(nullptr, ALC_DEFAULT_DEVICE_SPECIFIER) };
+		auto* defaultDevice = alcGetString(nullptr, ALC_DEFAULT_ALL_DEVICES_SPECIFIER);
 		spdlog::info("Default device: {}", defaultDevice);
 	}
 	else
@@ -69,9 +59,20 @@ Manager::~Manager()
 {
 	if (ctx)
 	{
+		alcMakeContextCurrent(nullptr);
 		alcDestroyContext(ctx);
 		alcCloseDevice(device);
 	}
+}
+
+bool Manager::CheckOpenALErr()
+{
+	if (auto err = alGetError(); err != AL_NO_ERROR)
+	{
+		spdlog::error("OpenAL error: {}", err);
+		return true;
+	}
+	return false;
 }
 
 }

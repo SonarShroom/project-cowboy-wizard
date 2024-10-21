@@ -2,6 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "source.h"
 #include "sprite.h"
 #include "spriterenderer.h"
 #include "texture.h"
@@ -11,33 +12,39 @@ namespace Tools
 {
 
 void EntityInspector::Draw()
-{
-	auto _ent = inspector.selectedEnt;
-	if (_ent != entt::null)
+{	
+	const auto _inspectComps = [&]<typename ...CompTypes_t>(auto & reg, auto & ent) constexpr
 	{
-		auto& _reg = inspector.scene->registry;
-		auto* _transform = _reg.try_get<World::Transform>(_ent);
-		if (_transform)
+		const auto _inspectComp = [&]<typename CompType_t>(auto & reg, auto & ent) constexpr
 		{
-			InspectComponent(*_transform);
-		}
+			auto* comp = reg.try_get<CompType_t>(ent);
+			if (comp)
+			{
+				if (!ImGui::CollapsingHeader(CompType_t::name))
+				{
+					return;
+				}
+				InspectComponent(*comp);
+			}
+		};
+		(_inspectComp.template operator() < CompTypes_t > (reg, ent), ...);
+	};
 
-		auto* _spriteRenderer = _reg.try_get<Graphics::SpriteRenderer>(_ent);
-		if (_spriteRenderer)
-		{
-			InspectComponent(*_spriteRenderer);
-		}
+	auto ent = inspector.selectedEnt;
+	if (ent != entt::null)
+	{
+		auto& reg = inspector.scene->registry;
+		_inspectComps.template operator()<
+			World::Transform,
+			Graphics::SpriteRenderer,
+			Audio::Source
+		>(reg, ent);
 	}
 }
 
 template<>
 void EntityInspector::InspectComponent(World::Transform& transform)
 {
-	if (!ImGui::CollapsingHeader("Transform"))
-	{
-		return;
-	}
-
 	auto pos = transform.position;
 	auto rot = transform.rotation;
 	auto sca = transform.scale;
@@ -79,12 +86,6 @@ void EntityInspector::InspectComponent(World::Transform& transform)
 template<>
 void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 {
-	if (!ImGui::CollapsingHeader("Sprite Renderer"))
-	{
-		return;
-	}
-
-	ImGui::Text("Image");
 	const auto* texture = spriteRenderer.GetTexture();
 	const auto* sprite = spriteRenderer.GetSprite();
 	if (sprite && texture)
@@ -140,6 +141,16 @@ void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 		ImGui::SameLine();
 		ImGui::TextColored(ImColor(255, 0, 0, 255), "No sprite/texture assigned.");
 	}
+}
+
+template<>
+void EntityInspector::InspectComponent(Audio::Source& source)
+{
+	ImGui::Text("Source: %d", source.id);
+
+	auto* sound = source.GetSound();
+	ImGui::Text("Sound: %s", sound->id.c_str());
+	ImGui::Text("Sound Buffer: %d", sound->bufferID);
 }
 
 }

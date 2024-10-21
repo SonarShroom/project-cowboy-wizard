@@ -25,6 +25,52 @@
 namespace Resources
 {
 
+Manager::Manager()
+{
+	auto error = FT_Init_FreeType(&ftLibrary);
+	if (error)
+	{
+		spdlog::error("Error initializing freetype library! Error code: {}", error);
+		ftLibrary = { };
+	}
+}
+
+Manager::~Manager()
+{
+	if (ftLibrary)
+	{
+		FT_Done_FreeType(ftLibrary);
+	}
+}
+
+template<>
+Font* Manager::CreateResource(const std::filesystem::path& fontPath)
+{
+	if (!ftLibrary)
+	{
+		spdlog::warn("FreeType library not loaded!");
+		return nullptr;
+	}
+
+	if (!std::filesystem::exists(fontPath))
+	{
+		throw std::runtime_error("Font file does not exist!");
+	}
+
+	FT_Face face { };
+	auto err = FT_New_Face(ftLibrary, fontPath.string().c_str(), 0, &face);
+	if (err == FT_Err_Unknown_File_Format)
+	{
+		throw std::runtime_error("Font file format invalid!");
+	}
+	else if (err)
+	{
+		throw std::runtime_error("Could not load default font face!");
+	}
+
+
+}
+
 template<>
 Sprite* Manager::CreateResource(const std::filesystem::path& pngPath)
 {
