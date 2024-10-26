@@ -22,6 +22,7 @@ class Texture;
 class Renderer
 {
 public:
+	static unsigned int quadEBO;
 	glm::mat4 projectionMat;
 
 	Renderer(Window& window, World::Scene& scene);

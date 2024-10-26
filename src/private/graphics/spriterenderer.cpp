@@ -20,9 +20,7 @@ SpriteRenderer::SpriteRenderer(Graphics::Renderer& renderer) : renderer(renderer
 	glBindBuffer(type, vbo);
 	glBufferData(type, sizeof(Quad::verts), quad.verts, GL_STATIC_DRAW);
 
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Quad::elementIndicies), Quad::elementIndicies, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Renderer::quadEBO);
 
 	constexpr auto stride = sizeof(Vertex);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);

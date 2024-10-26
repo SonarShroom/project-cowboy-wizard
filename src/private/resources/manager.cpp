@@ -67,8 +67,6 @@ Font* Manager::CreateResource(const std::filesystem::path& fontPath)
 	{
 		throw std::runtime_error("Could not load default font face!");
 	}
-
-
 }
 
 template<>
@@ -186,6 +184,7 @@ Sprite* Manager::CreateResource(const std::filesystem::path& pngPath)
 	auto* retVal = new Sprite(pngPath, width, height, colorType, pngDataVector);
 	resources[pngPath.string()] = std::unique_ptr<Resource>(retVal);
 
+	png_destroy_read_struct(&pngData, &pngInfo, &pngEndInfo);
 	return retVal;
 }
 

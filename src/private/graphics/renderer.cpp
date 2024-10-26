@@ -4,10 +4,13 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "animationrenderer.h"
 #include "context.h"
 
 namespace Graphics
 {
+
+unsigned int Renderer::quadEBO {};
 
 static void FrameBufferSizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -31,6 +34,15 @@ Renderer::Renderer(Window& window, World::Scene& scene) : window(window), scene(
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glfwSetFramebufferSizeCallback(window.GetRawWindow(), &FrameBufferSizeCallback);
 	window.renderer = this;
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	if (!quadEBO)
+	{
+		glGenBuffers(1, &quadEBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Quad::elementIndicies), Quad::elementIndicies, GL_STATIC_DRAW);
+	}
 }
 
 void Renderer::SetClearColor(glm::vec4& clearColor)
@@ -42,7 +54,7 @@ void Renderer::SetClearColor(glm::vec4& clearColor)
 void Renderer::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	auto rendererView = scene.registry.view<Graphics::SpriteRenderer>();
+	auto rendererView = scene.registry.view<Graphics::AnimationRenderer>();
 	for (auto [ent, renderer] : rendererView.each())
 	{
 		renderer.Render();

@@ -17,7 +17,7 @@ Manager::Manager()
 		auto* beginDeviceNameChar = deviceList;
 		auto* endDeviceNameChar = beginDeviceNameChar + 1;
 		
-		std::vector<std::string> deviceNames;
+		std::vector<std::string_view> deviceNames;
 		while (*beginDeviceNameChar != 0 && *endDeviceNameChar != 0)
 		{
 			endDeviceNameChar++;
@@ -31,7 +31,7 @@ Manager::Manager()
 
 		for (const auto& name : deviceNames)
 		{
-			spdlog::info("\t{}", name.c_str());
+			spdlog::info("\t{}", name.data());
 		}
 		auto* defaultDevice = alcGetString(nullptr, ALC_DEFAULT_ALL_DEVICES_SPECIFIER);
 		spdlog::info("Default device: {}", defaultDevice);

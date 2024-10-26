@@ -13,9 +13,11 @@ public:
 	void Update(float dt);
 
 	void UpdateSpriteRendererMatrix(entt::registry& registry, entt::entity ent);
+	void UpdateAnimationRendererMatrix(entt::registry& registry, entt::entity ent);
 
 	entt::registry registry;
 	entt::observer spriteTransformObserver;
+	entt::observer animTransformObserver;
 };
 
 }

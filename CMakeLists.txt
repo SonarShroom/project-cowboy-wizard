@@ -41,9 +41,11 @@ add_executable(cowboy_wizard_game
 
 	src/private/core/engine.cpp
 
+	src/private/graphics/animationrenderer.cpp
 	src/private/graphics/renderer.cpp
 	src/private/graphics/spriterenderer.cpp
 	src/private/graphics/texture.cpp
+	src/private/graphics/textureatlas.cpp
 	src/private/graphics/window.cpp
 
 	src/private/input/manager.cpp

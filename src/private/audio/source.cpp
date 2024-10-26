@@ -23,7 +23,7 @@ Source::~Source()
 
 void Source::SetSound(Resources::Sound* newSound)
 {
-	alSourcei(id, AL_BUFFER, sound ? sound->bufferID : 0);
+	alSourcei(id, AL_BUFFER, newSound ? newSound->bufferID : 0);
 	if (!Manager::CheckOpenALErr())
 	{
 		sound = newSound;
