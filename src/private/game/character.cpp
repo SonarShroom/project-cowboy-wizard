@@ -4,6 +4,7 @@
 
 #include "animationrenderer.h"
 #include "engine.h"
+#include "resources/manager.h"
 #include "shader.h"
 #include "sprite.h"
 #include "transform.h"

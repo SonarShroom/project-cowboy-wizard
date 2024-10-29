@@ -18,7 +18,7 @@ void EntityInspector::Draw()
 	{
 		const auto _inspectComp = [&]<typename CompType_t>(auto & reg, auto & ent) constexpr
 		{
-			auto* comp = reg.try_get<CompType_t>(ent);
+			auto* comp = reg.template try_get<CompType_t>(ent);
 			if (comp)
 			{
 				if (!ImGui::CollapsingHeader(CompType_t::name))
@@ -44,7 +44,6 @@ void EntityInspector::Draw()
 	}
 }
 
-template<>
 void EntityInspector::InspectComponent(World::Transform& transform)
 {
 	auto pos = transform.position;
@@ -85,7 +84,6 @@ void EntityInspector::InspectComponent(World::Transform& transform)
 	}
 }
 
-template<>
 void EntityInspector::InspectComponent(Graphics::AnimationRenderer& animationRenderer)
 {
 	const auto* atlas = animationRenderer.GetTextureAtlas();
@@ -100,7 +98,6 @@ void EntityInspector::InspectComponent(Graphics::AnimationRenderer& animationRen
 	}
 }
 
-template<>
 void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 {
 	const auto* texture = spriteRenderer.GetTexture();
@@ -159,7 +156,6 @@ void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 	}
 }
 
-template<>
 void EntityInspector::InspectComponent(Audio::Source& source)
 {
 	ImGui::Text("Source: %d", source.id);

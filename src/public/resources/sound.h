@@ -3,6 +3,7 @@
 #include "resource.h"
 
 #include <filesystem>
+#include <vector>
 
 namespace Resources
 {

@@ -81,7 +81,7 @@ Sprite* Manager::CreateResource(const std::filesystem::path& pngPath)
 #ifdef _MSC_VER
 	_wfopen(pngPath.c_str(), L"rb"),
 #else
-	std::fopen(pngPath.c_str(), L"rb"),
+	std::fopen(pngPath.c_str(), "rb"),
 #endif
 	fclose
 	};

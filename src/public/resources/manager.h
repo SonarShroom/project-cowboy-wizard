@@ -28,15 +28,6 @@ public:
 	template<typename T>
 	T* CreateResource(const std::filesystem::path& path) { return nullptr; }
 
-	template<>
-	Font* CreateResource<Font>(const std::filesystem::path& path);
-
-	template<>
-	Sprite* CreateResource<Sprite>(const std::filesystem::path& path);
-
-	template<>
-	Sound* CreateResource<Sound>(const std::filesystem::path& path);
-
 	Shader* CreateDefaultShader(const std::string& id, const std::string_view& vertexShader, const std::string_view& fragShader);
 
 	template<typename T>
@@ -80,5 +71,14 @@ private:
 
 	FT_Library ftLibrary { };
 };
+
+template<>
+Font* Manager::CreateResource(const std::filesystem::path& fontPath);
+
+template<>
+Sprite* Manager::CreateResource(const std::filesystem::path& pngPath);
+
+template<>
+Sound* Manager::CreateResource(const std::filesystem::path& soundPath);
 
 }
