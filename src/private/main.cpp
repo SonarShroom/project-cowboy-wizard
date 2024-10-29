@@ -1,6 +1,8 @@
 #include "engine.h"
 
 #include "animationrenderer.h"
+#include "background.h"
+#include "character.h"
 #include "source.h"
 #include "shader.h"
 #include "sprite.h"
@@ -19,6 +21,10 @@ int main()
 	auto* testSprite = engine.resourceManager->GetOrCreateResource<Resources::Sprite>("assets/Samurai/Attack_1.png");
 	auto* testSound = engine.resourceManager->GetOrCreateResource<Resources::Sound>("assets/sfx_wpn_cannon1.wav");
 	defaultShader->SetInt("texture0", 0);
+
+	auto* bgSprite = engine.resourceManager->GetOrCreateResource<Resources::Sprite>("assets/nature 3/origbig.png");
+	Game::Background bg(*engine.window, engine.scene, *bgSprite, *defaultShader);
+	Game::Character character(engine, engine.scene);
 
 	auto& registry = engine.scene.registry;
 	auto ent = registry.create();

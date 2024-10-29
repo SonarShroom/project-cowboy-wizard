@@ -54,4 +54,10 @@ TextureAtlas::TextureAtlas(Resources::Sprite& sprite, unsigned int hDivs, unsign
 	}
 }
 
+TextureAtlas::~TextureAtlas()
+{
+	glDeleteVertexArrays(vaos.size(), vaos.data());
+	glDeleteBuffers(vbos.size(), vbos.data());
+}
+
 }

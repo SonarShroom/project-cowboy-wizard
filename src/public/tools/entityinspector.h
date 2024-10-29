@@ -14,6 +14,7 @@ namespace Audio
 
 namespace Graphics
 {
+	class AnimationRenderer;
 	class SpriteRenderer;
 }
 
@@ -35,13 +36,12 @@ public:
 	template<typename T>
 	void InspectComponent(T& comp)
 	{
-		if (!ImGui::CollapsingHeader("Unknown Component"))
-		{
-			return;
-		}
-		ImGui::Text("Breakpoint this function to find out which type it then implement it.");
+		ImGui::Text("Inspector for this component was not implemented.");
 	}
 
+	template<>
+	void InspectComponent(Graphics::AnimationRenderer& renderer);
+	
 	template<>
 	void InspectComponent(Graphics::SpriteRenderer& renderer);
 

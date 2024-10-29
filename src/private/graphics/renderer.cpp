@@ -54,8 +54,13 @@ void Renderer::SetClearColor(glm::vec4& clearColor)
 void Renderer::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	auto rendererView = scene.registry.view<Graphics::AnimationRenderer>();
-	for (auto [ent, renderer] : rendererView.each())
+	auto spriteRendererView = scene.registry.view<Graphics::SpriteRenderer>();
+	for (auto [ent, renderer] : spriteRendererView.each())
+	{
+		renderer.Render();
+	}
+	auto animationRendererView = scene.registry.view<Graphics::AnimationRenderer>();
+	for (auto [ent, renderer] : animationRendererView.each())
 	{
 		renderer.Render();
 	}

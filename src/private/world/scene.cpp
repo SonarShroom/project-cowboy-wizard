@@ -37,9 +37,9 @@ void Scene::Update(float dt)
 	spriteTransformObserver.clear();
 
 	for (const auto _ent : animTransformObserver) {
-		UpdateSpriteRendererMatrix(registry, _ent);
+		UpdateAnimationRendererMatrix(registry, _ent);
 	}
-	spriteTransformObserver.clear();
+	animTransformObserver.clear();
 
 	auto animRendererView = registry.view<Graphics::AnimationRenderer>();
 	for (auto [ent, renderer] : animRendererView.each())
@@ -63,7 +63,7 @@ void Scene::UpdateSpriteRendererMatrix(entt::registry& registry, entt::entity en
 	_modelMat = glm::translate(_modelMat, transform.position);
 
 	// Rotate around the center
-	_modelMat = glm::translate(_modelMat, glm::vec3(.5f * spriteRenderer.width, .5f * spriteRenderer.width, 0.0f));
+	_modelMat = glm::translate(_modelMat, glm::vec3(.5f * spriteRenderer.width, .5f * spriteRenderer.height, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -90,13 +90,13 @@ void Scene::UpdateAnimationRendererMatrix(entt::registry& registry, entt::entity
 	_modelMat = glm::translate(_modelMat, transform.position);
 
 	// Rotate around the center
-	_modelMat = glm::translate(_modelMat, glm::vec3(.5f * atlas->frameWidth, .5f * atlas->frameHeight, 0.0f));
+	_modelMat = glm::translate(_modelMat, glm::vec3(.5f * animRenderer.width, .5f * animRenderer.height, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
 	_modelMat = glm::rotate(_modelMat, transform.rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-	_modelMat = glm::translate(_modelMat, glm::vec3(-.5f * atlas->frameWidth, -.5f * atlas->frameHeight, 0.0f));
+	_modelMat = glm::translate(_modelMat, glm::vec3(-.5f * animRenderer.width, -.5f * animRenderer.height, 0.0f));
 
-	_modelMat = glm::scale(_modelMat, glm::vec3(atlas->frameWidth, atlas->frameHeight, 1.0f));
+	_modelMat = glm::scale(_modelMat, glm::vec3(animRenderer.width, animRenderer.height, 1.0f));
 	_modelMat = glm::scale(_modelMat, transform.scale);
 }
 

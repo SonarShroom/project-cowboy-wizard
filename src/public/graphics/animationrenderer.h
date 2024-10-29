@@ -2,6 +2,8 @@
 
 #include "renderer.h"
 
+#include "textureatlas.h"
+
 namespace Resources
 {
 	class Shader;
@@ -10,11 +12,11 @@ namespace Resources
 namespace Graphics
 {
 
-class TextureAtlas;
-
 class AnimationRenderer
 {
 public:
+	static constexpr char name[] = "Animation Renderer";
+
 	AnimationRenderer(Renderer& renderer) : renderer(renderer) { }
 
 	void Update(float dt);
@@ -22,9 +24,17 @@ public:
 	void Render();
 
 	inline TextureAtlas* GetTextureAtlas() { return atlas; }
-	inline void SetTextureAtlas(TextureAtlas* texAtlas) { atlas = texAtlas; currAnimFrame = 0; timer = 0; }
+	inline void SetTextureAtlas(TextureAtlas* texAtlas) {
+		atlas = texAtlas;
+		currAnimFrame = 0;
+		timer = 0;
+		width = texAtlas->frameWidth;
+		height = texAtlas->frameHeight;
+	}
 
 	unsigned int fps			{ };
+	unsigned int width			{ };
+	unsigned int height			{ };
 	unsigned int currAnimFrame	{ };
 	float timer					{ };
 	Resources::Shader* shader	{ };

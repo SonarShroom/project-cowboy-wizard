@@ -41,6 +41,9 @@ add_executable(cowboy_wizard_game
 
 	src/private/core/engine.cpp
 
+	src/private/game/background.cpp
+	src/private/game/character.cpp
+
 	src/private/graphics/animationrenderer.cpp
 	src/private/graphics/renderer.cpp
 	src/private/graphics/spriterenderer.cpp
@@ -71,6 +74,9 @@ target_include_directories(cowboy_wizard_game PRIVATE src/private/audio)
 
 target_include_directories(cowboy_wizard_game PRIVATE src/public/core)
 target_include_directories(cowboy_wizard_game PRIVATE src/private/core)
+
+target_include_directories(cowboy_wizard_game PRIVATE src/public/game)
+target_include_directories(cowboy_wizard_game PRIVATE src/private/game)
 
 target_include_directories(cowboy_wizard_game PRIVATE src/public/graphics)
 target_include_directories(cowboy_wizard_game PRIVATE src/private/graphics)

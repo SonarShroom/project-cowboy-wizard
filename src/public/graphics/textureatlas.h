@@ -18,6 +18,7 @@ class TextureAtlas
 public:
 	TextureAtlas() = default;
 	TextureAtlas(Resources::Sprite& sprite, unsigned int hDivs, unsigned int vDivs);
+	~TextureAtlas();
 
 	Texture* texture		{ };
 	unsigned int numFrames	{ };

@@ -2,6 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "animationrenderer.h"
 #include "source.h"
 #include "sprite.h"
 #include "spriterenderer.h"
@@ -36,6 +37,7 @@ void EntityInspector::Draw()
 		auto& reg = inspector.scene->registry;
 		_inspectComps.template operator()<
 			World::Transform,
+			Graphics::AnimationRenderer,
 			Graphics::SpriteRenderer,
 			Audio::Source
 		>(reg, ent);
@@ -84,6 +86,21 @@ void EntityInspector::InspectComponent(World::Transform& transform)
 }
 
 template<>
+void EntityInspector::InspectComponent(Graphics::AnimationRenderer& animationRenderer)
+{
+	const auto* atlas = animationRenderer.GetTextureAtlas();
+
+	if (atlas)
+	{
+		ImGui::Text("Resource: %s", atlas->texture->sprite->id.c_str());
+	}
+	else
+	{
+
+	}
+}
+
+template<>
 void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 {
 	const auto* texture = spriteRenderer.GetTexture();
@@ -92,7 +109,7 @@ void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 	{
 		const auto id		{ (ImTextureID)texture->id };
 		const ImVec2 size	{ (float)sprite->width, (float)sprite->height };
-		ImGui::Image(id, size);
+		//ImGui::Image(id, size);
 		ImGui::Text("Resource: %s", sprite->id.c_str());
 		auto width = spriteRenderer.width;
 		ImGui::Text("Width");
@@ -138,7 +155,6 @@ void EntityInspector::InspectComponent(Graphics::SpriteRenderer& spriteRenderer)
 	}
 	else
 	{
-		ImGui::SameLine();
 		ImGui::TextColored(ImColor(255, 0, 0, 255), "No sprite/texture assigned.");
 	}
 }

@@ -5,7 +5,6 @@
 
 #include "shader.h"
 #include "texture.h"
-#include "textureatlas.h"
 
 namespace Graphics
 {
